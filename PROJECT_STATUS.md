@@ -1,8 +1,10 @@
-# 🎉 Warp-WebStorm Integration: Project Complete!
+## 🔄 Warp-WebStorm Integration: Architecture Revised Based on Technical Review!
 
-## ✅ **PRODUCTION-READY IMPLEMENTATION COMPLETED**
+## 🔍 **TECHNICAL REVIEW COMPLETED - ARCHITECTURE REVISED**
 
-We have successfully created a **comprehensive, production-ready integration system** for Warp Terminal and JetBrains WebStorm IDE with AI-powered multi-agent coordination. This is a **complete, working solution** ready for development, testing, and marketplace deployment.
+Following a critical technical review, we've **revised our approach** based on the reality that JetBrains AI Assistant does not support custom MCP tool injection. The new **file-based bridge architecture** is actually **more robust and practical** than the original MCP-based design.
+
+**Key Discovery:** JetBrains AI Assistant cannot host custom MCP tools directly. Our new approach works **today** with existing tools while providing a clear upgrade path for future MCP support.
 
 ---
 
