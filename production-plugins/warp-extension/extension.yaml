@@ -1,0 +1,335 @@
+# Warp Extension Manifest for JetBrains Integration
+name: jetbrains-integration
+display_name: "JetBrains IDE Integration"
+version: 1.0.0
+description: |
+  Seamless integration between Warp AI terminal and JetBrains IDEs.
+  Enables AI-coordinated development workflows with real-time context sharing,
+  multi-agent coordination, and intelligent workflow automation.
+
+author: Warp
+email: support@warp.dev
+website: https://warp.dev
+license: MIT
+repository: https://github.com/warpdotdev/warp-jetbrains-integration
+
+# Compatibility
+warp_version: ">=0.2024.10.29"
+platforms:
+  - linux
+  - macos
+  - windows
+
+# Categories for the Warp Extension Store
+categories:
+  - development
+  - integration
+  - ai-tools
+  - productivity
+
+tags:
+  - jetbrains
+  - webstorm
+  - intellij
+  - ide
+  - ai-coordination
+  - context-sharing
+  - multi-agent
+  - mcp
+
+# Extension entry point
+entry_point: dist/main.js
+
+# Required permissions
+permissions:
+  - terminal-access          # Access to terminal operations
+  - file-system              # File system operations for context
+  - network                  # Network access for MCP communication
+  - ai-agents                # Access to Warp's AI agent system
+  - process-spawn            # Spawn processes for IDE communication
+  - system-notifications     # Show system notifications
+
+# Dependencies
+dependencies:
+  "@warp/sdk": "^2.0.0"
+  "@modelcontextprotocol/sdk": "^1.0.0"
+  "ws": "^8.14.0"
+  "chokidar": "^3.5.3"
+  "fast-glob": "^3.3.0"
+  "zod": "^3.22.0"
+
+# Development dependencies
+dev_dependencies:
+  "@types/node": "^20.0.0"
+  "@types/ws": "^8.5.0"
+  "typescript": "^5.0.0"
+  "esbuild": "^0.19.0"
+  "vitest": "^0.34.0"
+
+# Configuration schema
+configuration:
+  jetbrains:
+    type: object
+    properties:
+      auto_detect:
+        type: boolean
+        default: true
+        description: "Automatically detect running JetBrains IDEs"
+      
+      supported_ides:
+        type: array
+        items:
+          type: string
+          enum: ["webstorm", "intellij", "pycharm", "goland", "phpstorm", "rustrover", "clion"]
+        default: ["webstorm", "intellij", "pycharm", "goland"]
+        description: "List of supported JetBrains IDEs"
+      
+      mcp_port:
+        type: integer
+        minimum: 1024
+        maximum: 65535
+        default: 3000
+        description: "Port for MCP server communication"
+      
+      context_sync:
+        type: string
+        enum: ["real-time", "on-demand", "disabled"]
+        default: "real-time"
+        description: "Context synchronization mode"
+      
+      max_context_size:
+        type: integer
+        minimum: 1024
+        maximum: 1048576
+        default: 102400
+        description: "Maximum context size in bytes"
+      
+      security:
+        type: object
+        properties:
+          require_auth:
+            type: boolean
+            default: true
+            description: "Require authentication for connections"
+          
+          allowed_paths:
+            type: array
+            items:
+              type: string
+            default: []
+            description: "List of allowed file paths for context sharing"
+          
+          rate_limit:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 100
+            description: "Rate limit for context updates per minute"
+
+# AI Agents configuration
+agents:
+  - name: context-processor
+    display_name: "Context Processor"
+    description: "Processes and analyzes IDE context for AI coordination"
+    enabled: true
+    priority: high
+    capabilities:
+      - file-analysis
+      - project-structure
+      - dependency-detection
+    
+  - name: workflow-automation
+    display_name: "Workflow Automation"
+    description: "Automates development workflows based on IDE context"
+    enabled: true
+    priority: medium
+    capabilities:
+      - build-automation
+      - test-coordination
+      - deployment-assistance
+    
+  - name: git-coordinator
+    display_name: "Git Coordinator"
+    description: "Coordinates Git operations between IDE and terminal"
+    enabled: true
+    priority: medium
+    capabilities:
+      - commit-assistance
+      - branch-management
+      - merge-conflict-resolution
+    
+  - name: debug-assistant
+    display_name: "Debug Assistant"
+    description: "Assists with debugging operations and log analysis"
+    enabled: false
+    priority: low
+    capabilities:
+      - log-analysis
+      - error-tracking
+      - performance-monitoring
+
+# UI Components
+ui:
+  components:
+    - name: context-panel
+      type: panel
+      title: "IDE Context"
+      description: "Shows current IDE context and synchronization status"
+      default_visible: true
+      position: right
+    
+    - name: agent-status
+      type: status-indicator
+      title: "Agent Status"
+      description: "Shows status of AI agents and coordination"
+      default_visible: true
+      position: bottom
+    
+    - name: workflow-manager
+      type: modal
+      title: "Workflow Manager"
+      description: "Manage and execute coordinated workflows"
+      default_visible: false
+
+# Keyboard shortcuts
+shortcuts:
+  - key: "ctrl+shift+j"
+    action: "toggle-context-panel"
+    description: "Toggle IDE context panel"
+    
+  - key: "ctrl+shift+alt+w"
+    action: "sync-all-context"
+    description: "Sync all IDE context to Warp"
+    
+  - key: "ctrl+shift+alt+r"
+    action: "reset-connection"
+    description: "Reset connection to JetBrains IDE"
+
+# Settings panel configuration
+settings:
+  - section: "Connection"
+    settings:
+      - key: "jetbrains.auto_detect"
+        type: boolean
+        title: "Auto-detect IDEs"
+        description: "Automatically detect and connect to running JetBrains IDEs"
+      
+      - key: "jetbrains.mcp_port"
+        type: number
+        title: "MCP Port"
+        description: "Port for MCP server communication"
+        validation:
+          min: 1024
+          max: 65535
+  
+  - section: "Context Synchronization"
+    settings:
+      - key: "jetbrains.context_sync"
+        type: select
+        title: "Sync Mode"
+        description: "How often to synchronize context with IDE"
+        options:
+          - value: "real-time"
+            label: "Real-time"
+          - value: "on-demand"
+            label: "On-demand only"
+          - value: "disabled"
+            label: "Disabled"
+      
+      - key: "jetbrains.max_context_size"
+        type: number
+        title: "Max Context Size"
+        description: "Maximum size of context data to sync (bytes)"
+        validation:
+          min: 1024
+          max: 1048576
+  
+  - section: "Security"
+    settings:
+      - key: "jetbrains.security.require_auth"
+        type: boolean
+        title: "Require Authentication"
+        description: "Require authentication for IDE connections"
+      
+      - key: "jetbrains.security.rate_limit"
+        type: number
+        title: "Rate Limit"
+        description: "Maximum context updates per minute"
+        validation:
+          min: 1
+          max: 1000
+
+# Documentation and help
+documentation:
+  getting_started: "docs/getting-started.md"
+  configuration: "docs/configuration.md"
+  troubleshooting: "docs/troubleshooting.md"
+  api_reference: "docs/api-reference.md"
+
+help:
+  support_url: "https://warp.dev/support"
+  community_url: "https://discord.com/invite/warpdotdev"
+  github_issues: "https://github.com/warpdotdev/warp-jetbrains-integration/issues"
+
+# Marketplace metadata
+marketplace:
+  screenshots:
+    - path: "screenshots/integration-overview.png"
+      caption: "Seamless integration between Warp and JetBrains IDEs"
+    - path: "screenshots/context-sync.png"
+      caption: "Real-time context synchronization in action"
+    - path: "screenshots/multi-agent-workflow.png"
+      caption: "Multi-agent AI coordination for complex workflows"
+    - path: "screenshots/settings-panel.png"
+      caption: "Comprehensive configuration options"
+  
+  keywords:
+    - jetbrains
+    - ide
+    - integration
+    - ai
+    - context
+    - workflow
+    - automation
+    - development
+    - productivity
+    - terminal
+  
+  pricing: free
+  
+  changelog_url: "https://github.com/warpdotdev/warp-jetbrains-integration/blob/main/CHANGELOG.md"
+
+# Build configuration
+build:
+  target: es2022
+  minify: true
+  source_maps: true
+  bundle_format: esm
+  
+  assets:
+    - "icons/**/*"
+    - "docs/**/*"
+    - "screenshots/**/*"
+    - "examples/**/*"
+  
+  exclude:
+    - "src/**/*.test.ts"
+    - "src/**/*.spec.ts"
+    - "__tests__/**/*"
+    - "*.config.js"
+
+# Testing configuration
+testing:
+  framework: vitest
+  test_patterns:
+    - "src/**/*.test.ts"
+    - "src/**/*.spec.ts"
+  
+  coverage:
+    enabled: true
+    threshold: 80
+    formats: ["text", "html", "json"]
+  
+  integration_tests:
+    enabled: true
+    timeout: 30000

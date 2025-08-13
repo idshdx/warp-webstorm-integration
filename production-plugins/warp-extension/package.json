@@ -1,0 +1,130 @@
+{
+  "name": "warp-jetbrains-integration",
+  "version": "1.0.0",
+  "description": "Seamless integration between Warp AI terminal and JetBrains IDEs with multi-agent coordination",
+  "main": "dist/main.js",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0",
+    "warp": ">=0.2024.10.29"
+  },
+  "scripts": {
+    "build": "pnpm run clean && pnpm run compile && pnpm run bundle",
+    "build:dev": "pnpm run clean && pnpm run compile:dev && pnpm run bundle:dev",
+    "compile": "tsc --build",
+    "compile:dev": "tsc --build --incremental",
+    "bundle": "esbuild src/main.ts --bundle --outfile=dist/main.js --format=esm --target=es2022 --minify --sourcemap",
+    "bundle:dev": "esbuild src/main.ts --bundle --outfile=dist/main.js --format=esm --target=es2022 --sourcemap",
+    "clean": "rimraf dist",
+    "dev": "pnpm run build:dev && warp-dev-server --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,json,md}\"",
+    "type-check": "tsc --noEmit",
+    "validate": "pnpm run type-check && pnpm run lint && pnpm run format:check && pnpm run test",
+    "pack-extension": "warp-extension-packager --manifest extension.yaml --output dist/jetbrains-integration.wext",
+    "publish": "warp-extension-publisher --file dist/jetbrains-integration.wext",
+    "prepublish": "pnpm run validate && pnpm run build && pnpm run pack-extension"
+  },
+  "keywords": [
+    "warp",
+    "jetbrains",
+    "webstorm",
+    "intellij",
+    "ide",
+    "integration",
+    "ai",
+    "context-sharing",
+    "multi-agent",
+    "mcp",
+    "terminal",
+    "development",
+    "productivity"
+  ],
+  "author": {
+    "name": "Warp",
+    "email": "support@warp.dev",
+    "url": "https://warp.dev"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/warpdotdev/warp-jetbrains-integration#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/warpdotdev/warp-jetbrains-integration.git"
+  },
+  "bugs": {
+    "url": "https://github.com/warpdotdev/warp-jetbrains-integration/issues"
+  },
+  "files": [
+    "dist",
+    "docs",
+    "icons",
+    "screenshots",
+    "extension.yaml",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "dependencies": {
+    "@warp/sdk": "^2.0.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "ws": "^8.14.2",
+    "chokidar": "^3.5.3",
+    "fast-glob": "^3.3.2",
+    "zod": "^3.22.4",
+    "uuid": "^9.0.1",
+    "lodash-es": "^4.17.21",
+    "yaml": "^2.3.4",
+    "semver": "^7.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.9",
+    "@types/uuid": "^9.0.7",
+    "@types/lodash-es": "^4.17.12",
+    "@types/semver": "^7.5.6",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitest/coverage-v8": "^1.0.4",
+    "esbuild": "^0.19.8",
+    "eslint": "^8.55.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4",
+    "warp-extension-dev-tools": "^1.0.0"
+  },
+  "peerDependencies": {
+    "warp": ">=0.2024.10.29"
+  },
+  "packageManager": "pnpm@8.12.0",
+  "volta": {
+    "node": "20.10.0",
+    "pnpm": "8.12.0"
+  },
+  "warp": {
+    "extension": {
+      "name": "jetbrains-integration",
+      "manifest": "extension.yaml",
+      "entry": "dist/main.js",
+      "category": "development",
+      "api_version": "2.0"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://extensions.warp.dev/registry"
+  },
+  "funding": {
+    "type": "company",
+    "url": "https://warp.dev"
+  }
+}

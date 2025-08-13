@@ -1,0 +1,257 @@
+<idea-plugin>
+    <id>com.warp.jetbrains.integration</id>
+    <name>Warp Terminal Integration</name>
+    <version>1.0.0</version>
+    <vendor email="support@warp.dev" url="https://warp.dev">Warp</vendor>
+
+    <description><![CDATA[
+    <h2>Seamless AI-Powered Terminal Integration</h2>
+    
+    <p>Transform your development workflow with the <strong>Warp Terminal Integration</strong> plugin for JetBrains IDEs. 
+    This plugin creates a powerful bridge between your IDE and Warp's AI-powered terminal, enabling coordinated development 
+    workflows with multi-agent AI assistance.</p>
+
+    <h3>🚀 Key Features</h3>
+    <ul>
+        <li><strong>AI Coordination</strong>: Seamless integration with Warp's AI agents and your IDE's AI tools (Junie)</li>
+        <li><strong>Context Sharing</strong>: Real-time synchronization of project context, file selections, and debug sessions</li>
+        <li><strong>Multi-Agent Workflows</strong>: Coordinate complex development tasks across multiple AI agents</li>
+        <li><strong>One-Click Launches</strong>: Launch Warp terminal with full project context using keyboard shortcuts</li>
+        <li><strong>Git Integration</strong>: Coordinated version control operations between IDE and terminal</li>
+        <li><strong>Debug Coordination</strong>: Share breakpoints and debug context with terminal-based tools</li>
+    </ul>
+
+    <h3>🎯 Perfect For</h3>
+    <ul>
+        <li>Full-stack developers who work across IDE and terminal environments</li>
+        <li>Teams using AI-assisted development workflows</li>
+        <li>Developers who want seamless context sharing between tools</li>
+        <li>Anyone seeking more efficient terminal-IDE coordination</li>
+    </ul>
+
+    <h3>⚡ Quick Start</h3>
+    <ol>
+        <li>Install the plugin and restart your IDE</li>
+        <li>Install <a href="https://warp.dev">Warp terminal</a> if you haven't already</li>
+        <li>Use <kbd>Ctrl+Alt+W</kbd> to launch Warp with AI context</li>
+        <li>Use <kbd>Ctrl+Alt+S</kbd> to sync current IDE context to Warp</li>
+    </ol>
+
+    <p><strong>Note:</strong> This plugin requires <a href="https://warp.dev">Warp terminal</a> to be installed. 
+    The integration works with Warp's built-in AI agents and MCP (Model Context Protocol) servers.</p>
+
+    <h3>🔗 Links</h3>
+    <ul>
+        <li><a href="https://docs.warp.dev/extensions/jetbrains">Documentation</a></li>
+        <li><a href="https://github.com/warpdotdev/warp-jetbrains-integration">GitHub Repository</a></li>
+        <li><a href="https://warp.dev/support">Support</a></li>
+    </ul>
+    ]]></description>
+
+    <change-notes><![CDATA[
+    <h3>Version 1.0.0</h3>
+    <ul>
+        <li>🎉 Initial release with comprehensive AI coordination features</li>
+        <li>🔗 MCP context bridge for real-time synchronization</li>
+        <li>🤖 Multi-agent workflow coordination support</li>
+        <li>⌨️ Keyboard shortcuts for quick Warp access</li>
+        <li>🐛 Debug session context sharing</li>
+        <li>📁 Project-aware terminal launches</li>
+        <li>⚙️ Configurable integration settings</li>
+        <li>🔧 Tool window for managing Warp connections</li>
+    </ul>
+    ]]></change-notes>
+
+    <!-- Plugin compatibility -->
+    <idea-version since-build="232.0" until-build="242.*"/>
+
+    <!-- Required platform modules -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.json</depends>
+    <depends>com.intellij.modules.vcs</depends>
+
+    <!-- Optional IDE-specific features -->
+    <depends optional="true" config-file="webstorm-support.xml">JavaScript</depends>
+    <depends optional="true" config-file="intellij-support.xml">com.intellij.java</depends>
+    <depends optional="true" config-file="pycharm-support.xml">com.intellij.modules.python</depends>
+    <depends optional="true" config-file="goland-support.xml">org.jetbrains.plugins.go</depends>
+
+    <!-- Core extensions -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Application-level services -->
+        <applicationService 
+            serviceImplementation="com.warp.jetbrains.services.WarpConnectionService"/>
+        <applicationService 
+            serviceImplementation="com.warp.jetbrains.services.WarpSettingsService"/>
+        
+        <!-- Project-level services -->
+        <projectService 
+            serviceImplementation="com.warp.jetbrains.services.ContextSyncService"/>
+        <projectService 
+            serviceImplementation="com.warp.jetbrains.services.MCPClientService"/>
+        <projectService 
+            serviceImplementation="com.warp.jetbrains.services.WorkflowCoordinatorService"/>
+
+        <!-- Tool Window -->
+        <toolWindow 
+            id="Warp" 
+            factoryClass="com.warp.jetbrains.ui.WarpToolWindowFactory"
+            anchor="bottom"
+            icon="/icons/warp-icon.svg"
+            secondary="false"/>
+
+        <!-- Settings -->
+        <applicationConfigurable 
+            parentId="tools"
+            instance="com.warp.jetbrains.settings.WarpConfigurable"
+            id="com.warp.jetbrains.settings"
+            displayName="Warp Integration"/>
+
+        <!-- Status bar -->
+        <statusBarWidgetFactory
+            implementation="com.warp.jetbrains.ui.WarpStatusBarWidgetFactory"
+            id="WarpConnectionStatus"
+            order="after Encoding"/>
+
+        <!-- Listeners -->
+        <editorFactoryListener 
+            implementation="com.warp.jetbrains.listeners.FileChangeListener"/>
+        <projectOpenListener 
+            implementation="com.warp.jetbrains.listeners.ProjectOpenListener"/>
+        <projectCloseListener
+            implementation="com.warp.jetbrains.listeners.ProjectCloseListener"/>
+
+        <!-- Notifications -->
+        <notificationGroup 
+            id="Warp Integration" 
+            displayType="BALLOON" 
+            key="warp.integration.notification.group"/>
+    </extensions>
+
+    <!-- Application listeners -->
+    <applicationListeners>
+        <listener 
+            class="com.warp.jetbrains.listeners.WarpConnectionListener"
+            topic="com.warp.jetbrains.events.WarpConnectionTopic"/>
+        <listener
+            class="com.warp.jetbrains.listeners.DebugSessionListener"
+            topic="com.intellij.xdebugger.XDebuggerManagerListener"/>
+    </applicationListeners>
+
+    <!-- Project listeners -->
+    <projectListeners>
+        <listener
+            class="com.warp.jetbrains.listeners.VcsListener"
+            topic="com.intellij.openapi.vcs.checkin.CheckinHandlerFactory"/>
+    </projectListeners>
+
+    <!-- Actions -->
+    <actions>
+        <!-- Main action group -->
+        <group id="WarpIntegration" text="Warp" description="Warp Terminal Integration" popup="true">
+            <!-- Primary actions -->
+            <action 
+                id="WarpIntegration.LaunchWithContext" 
+                class="com.warp.jetbrains.actions.LaunchWarpWithContextAction"
+                text="Launch Warp with AI Context"
+                description="Opens Warp terminal with current project and file context"
+                icon="/icons/warp-launch.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt W"/>
+            </action>
+            
+            <action 
+                id="WarpIntegration.QuickLaunch"
+                class="com.warp.jetbrains.actions.QuickLaunchWarpAction"
+                text="Quick Launch Warp"
+                description="Opens Warp terminal in current project directory"
+                icon="/icons/warp-quick.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt T"/>
+            </action>
+
+            <separator/>
+
+            <!-- Context synchronization -->
+            <action 
+                id="WarpIntegration.SyncContext"
+                class="com.warp.jetbrains.actions.SyncContextAction"
+                text="Sync Context to Warp"
+                description="Synchronizes current IDE context with Warp AI agents"
+                icon="/icons/sync-context.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt S"/>
+            </action>
+
+            <action
+                id="WarpIntegration.SyncSelection"
+                class="com.warp.jetbrains.actions.SyncSelectionAction"
+                text="Send Selection to Warp"
+                description="Sends current text selection to Warp for AI processing"
+                icon="/icons/sync-selection.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt S"/>
+            </action>
+
+            <separator/>
+
+            <!-- Specialized launches -->
+            <action
+                id="WarpIntegration.LaunchDebugSession"
+                class="com.warp.jetbrains.actions.LaunchDebugSessionAction"
+                text="Launch Debug Session"
+                description="Opens Warp with debugging context and tools"
+                icon="/icons/debug-session.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt D"/>
+            </action>
+
+            <action
+                id="WarpIntegration.LaunchGitInterface"
+                class="com.warp.jetbrains.actions.LaunchGitInterfaceAction"
+                text="Launch Git Interface"
+                description="Opens Warp with Git operations and current repository context"
+                icon="/icons/git-interface.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt G"/>
+            </action>
+
+            <!-- Workflow coordination -->
+            <action
+                id="WarpIntegration.CoordinatedWorkflow"
+                class="com.warp.jetbrains.actions.CoordinatedWorkflowAction"
+                text="Execute Coordinated Workflow"
+                description="Runs predefined workflow with AI agent coordination"
+                icon="/icons/workflow.svg">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt X"/>
+            </action>
+
+            <separator/>
+            
+            <!-- Settings and management -->
+            <action
+                id="WarpIntegration.Settings"
+                class="com.warp.jetbrains.actions.OpenSettingsAction"
+                text="Warp Integration Settings"
+                description="Opens Warp integration settings"
+                icon="/icons/settings.svg"/>
+
+            <action
+                id="WarpIntegration.ConnectionStatus"
+                class="com.warp.jetbrains.actions.ShowConnectionStatusAction"
+                text="Connection Status"
+                description="Shows current Warp connection status and diagnostics"
+                icon="/icons/status.svg"/>
+
+            <!-- Add to various menus -->
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </group>
+
+        <!-- Toolbar actions -->
+        <action
+            id="WarpIntegration.ToolbarLaunch"
+            class="com.warp.jetbrains.actions.LaunchWarpWithContextAction"
+            text="Launch Warp"
+            description="Launch Warp with current context"
+            icon="/icons/warp-toolbar.svg">
+            <add-to-group group-id="MainToolBar" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>

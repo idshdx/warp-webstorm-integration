@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toolSet name="Warp Integration">
+  <!-- Basic Warp Terminal Launch -->
+  <tool name="Open Warp Terminal" description="Launch Warp terminal in current project directory" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="false" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="warp-terminal" />
+      <option name="PARAMETERS" value="--cwd $ProjectFileDir$" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+
+  <!-- Warp with AI Context -->
+  <tool name="Warp AI Session" description="Launch Warp with AI context for current project" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="false" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/warp-webstorm-integration/scripts/launch-warp-ai.sh" />
+      <option name="PARAMETERS" value="$ProjectFileDir$ $ProjectName$" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+
+  <!-- Warp with Current File Context -->
+  <tool name="Warp Current File" description="Open Warp with current file context" showInMainMenu="false" showInEditor="true" showInProject="false" showInSearchPopup="true" disabled="false" useConsole="false" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/warp-webstorm-integration/scripts/launch-warp-file-context.sh" />
+      <option name="PARAMETERS" value="$FilePath$ $FileDir$ $ProjectName$" />
+      <option name="WORKING_DIRECTORY" value="$FileDir$" />
+    </exec>
+  </tool>
+
+  <!-- Warp Debug Session -->
+  <tool name="Warp Debug Session" description="Launch Warp for debugging current project" showInMainMenu="true" showInEditor="false" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="false" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/warp-webstorm-integration/scripts/launch-warp-debug.sh" />
+      <option name="PARAMETERS" value="$ProjectFileDir$ $ProjectName$ $RunConfiguration$" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+
+  <!-- Warp Git Operations -->
+  <tool name="Warp Git Interface" description="Open Warp with Git context and operations" showInMainMenu="true" showInEditor="false" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="false" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/warp-webstorm-integration/scripts/launch-warp-git.sh" />
+      <option name="PARAMETERS" value="$ProjectFileDir$ $ProjectName$" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+
+  <!-- Sync Context to Warp -->
+  <tool name="Sync Context to Warp" description="Send current WebStorm context to Warp AI agents" showInMainMenu="true" showInEditor="true" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="false">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/warp-webstorm-integration/scripts/sync-context-to-warp.sh" />
+      <option name="PARAMETERS" value="$ProjectFileDir$ $FilePath$ $SelectionStartLine$ $SelectionEndLine$" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+
+  <!-- Execute Warp Workflow -->
+  <tool name="Execute Warp Workflow" description="Execute predefined Warp workflow for project" showInMainMenu="true" showInEditor="false" showInProject="true" showInSearchPopup="true" disabled="false" useConsole="true" showConsoleOnStdOut="true" showConsoleOnStdErr="true" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$USER_HOME$/warp-webstorm-integration/scripts/execute-warp-workflow.sh" />
+      <option name="PARAMETERS" value="$ProjectFileDir$ $ProjectName$" />
+      <option name="WORKING_DIRECTORY" value="$ProjectFileDir$" />
+    </exec>
+  </tool>
+</toolSet>

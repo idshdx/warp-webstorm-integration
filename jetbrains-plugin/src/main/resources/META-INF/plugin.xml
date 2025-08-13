@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+  <id>com.warpwebstorm.integration</id>
+  <name>Warp-WebStorm Integration</name>
+  <vendor email="support@warpwebstorm.dev" url="https://warpwebstorm.dev">Warp WebStorm Integration Team</vendor>
+
+  <description><![CDATA[
+    <p><strong>AI-coordinated integration between JetBrains IDEs and Warp terminal</strong></p>
+    
+    <p>This plugin enables seamless multi-agent workflows that coordinate code editing, testing, debugging, and deployment operations between your JetBrains IDE and Warp terminal.</p>
+    
+    <h3>Key Features:</h3>
+    <ul>
+      <li><strong>Real-time Context Sync:</strong> Automatically share project context between IDE and terminal</li>
+      <li><strong>AI Agent Coordination:</strong> Multi-agent workflows for complex development tasks</li>
+      <li><strong>Smart Command Integration:</strong> Execute terminal commands with IDE context awareness</li>
+      <li><strong>Debug Session Sync:</strong> Coordinate debugging between IDE and terminal</li>
+      <li><strong>Git Workflow Integration:</strong> Synchronized version control operations</li>
+    </ul>
+    
+    <h3>Requirements:</h3>
+    <ul>
+      <li>Warp Terminal installed and running</li>
+      <li>Node.js 18+ for MCP server</li>
+      <li>Network connectivity for local MCP communication</li>
+    </ul>
+  ]]></description>
+
+  <change-notes><![CDATA[
+    <h3>1.0.0 - Initial Release</h3>
+    <ul>
+      <li>MCP-based context sharing between IDE and Warp terminal</li>
+      <li>AI agent coordination for development workflows</li>
+      <li>Real-time synchronization of project state</li>
+      <li>Multi-agent debugging and testing support</li>
+      <li>Integrated Git workflow coordination</li>
+      <li>Customizable keyboard shortcuts for common actions</li>
+    </ul>
+  ]]></change-notes>
+
+  <!-- Plugin compatibility -->
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lang</depends>
+  <depends optional="true" config-file="javascript-support.xml">com.intellij.modules.javascript</depends>
+  <depends optional="true" config-file="java-support.xml">com.intellij.modules.java</depends>
+  <depends optional="true">Git4Idea</depends>
+  <depends optional="true">org.jetbrains.plugins.terminal</depends>
+
+  <!-- Project startup -->
+  <project-components>
+    <component>
+      <implementation-class>com.warpwebstorm.integration.WarpWebStormPlugin</implementation-class>
+    </component>
+  </project-components>
+
+  <!-- Extensions -->
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Notifications -->
+    <notificationGroup id="Warp Integration" 
+                       displayType="BALLOON" 
+                       key="notification.group.warp.integration"/>
+                       
+    <!-- Settings Configurable -->
+    <projectConfigurable parentId="tools" 
+                        instance="com.warpwebstorm.integration.settings.WarpIntegrationConfigurable"
+                        id="WarpIntegrationConfigurable"
+                        displayName="Warp Integration"/>
+  </extensions>
+
+  <!-- Actions -->
+  <actions>
+    <group id="WarpIntegrationActionGroup" text="Warp Integration" description="Warp Terminal Integration Actions">
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+      
+      <action id="LaunchWarpAction" 
+              class="com.warpwebstorm.integration.actions.LaunchWarpAction" 
+              text="Launch Warp Terminal" 
+              description="Launch Warp terminal in current project directory">
+        <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift T"/>
+      </action>
+      
+      <action id="SyncContextAction" 
+              class="com.warpwebstorm.integration.actions.SyncContextAction" 
+              text="Sync Context with Warp" 
+              description="Manually sync IDE context with Warp terminal"/>
+    </group>
+  </actions>
+</idea-plugin>

@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Warp Extension",
+      "type": "npm",
+      "script": "build",
+      "path": "warp-extension/",
+      "group": "build",
+      "presentation": {
+        "reveal": "silent"
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Test Warp Extension",
+      "type": "npm",
+      "script": "test",
+      "path": "warp-extension/",
+      "group": "test",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Build JetBrains Plugin",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["build"],
+      "options": {
+        "cwd": "${workspaceFolder}/jetbrains-plugin"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "silent"
+      }
+    }
+  ]
+}

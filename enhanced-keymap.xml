@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<keymap version="1" name="Warp Integration Enhanced" parent="XWin copy">
+  <!-- Core Warp Integration Shortcuts -->
+  
+  <!-- Launch Warp with AI Context -->
+  <action id="ExternalTool_Warp AI Session">
+    <keyboard-shortcut first-keystroke="ctrl alt w" />
+    <keyboard-shortcut first-keystroke="shift ctrl alt w" />
+  </action>
+  
+  <!-- Open Basic Warp Terminal -->
+  <action id="ExternalTool_Open Warp Terminal">
+    <keyboard-shortcut first-keystroke="ctrl alt t" />
+  </action>
+  
+  <!-- Sync Context to Warp -->
+  <action id="ExternalTool_Sync Context to Warp">
+    <keyboard-shortcut first-keystroke="ctrl alt s" />
+    <keyboard-shortcut first-keystroke="shift ctrl s" />
+  </action>
+  
+  <!-- Warp with Current File Context -->
+  <action id="ExternalTool_Warp Current File">
+    <keyboard-shortcut first-keystroke="ctrl alt f" />
+  </action>
+  
+  <!-- Debug Session in Warp -->
+  <action id="ExternalTool_Warp Debug Session">
+    <keyboard-shortcut first-keystroke="ctrl alt d" />
+    <keyboard-shortcut first-keystroke="shift ctrl alt d" />
+  </action>
+  
+  <!-- Git Operations in Warp -->
+  <action id="ExternalTool_Warp Git Interface">
+    <keyboard-shortcut first-keystroke="ctrl alt g" />
+  </action>
+  
+  <!-- Execute Warp Workflow -->
+  <action id="ExternalTool_Execute Warp Workflow">
+    <keyboard-shortcut first-keystroke="ctrl alt x" />
+    <keyboard-shortcut first-keystroke="shift ctrl alt x" />
+  </action>
+  
+  <!-- Enhanced AI Integration Shortcuts -->
+  
+  <!-- AI Assistant Hub with Warp Context -->
+  <action id="AIAssistantHubPopupAction">
+    <keyboard-shortcut first-keystroke="shift alt k" />
+    <keyboard-shortcut first-keystroke="ctrl shift k" />
+  </action>
+  
+  <!-- Quick AI Code Generation -->
+  <action id="AIAssistant.ToolWindow.Snippet.Apply.Smart">
+    <keyboard-shortcut first-keystroke="shift ctrl alt q" />
+    <keyboard-shortcut first-keystroke="alt enter" />
+  </action>
+  
+  <!-- Junie Integration -->
+  <action id="JunieAction">
+    <keyboard-shortcut first-keystroke="ctrl alt j" />
+  </action>
+  
+  <!-- Context-Aware Actions -->
+  
+  <!-- Send Selection to Warp AI -->
+  <action id="ExternalTool_Send Selection to Warp">
+    <keyboard-shortcut first-keystroke="ctrl shift alt a" />
+  </action>
+  
+  <!-- Coordinate Multi-Agent Task -->
+  <action id="ExternalTool_Coordinate Multi-Agent Task">
+    <keyboard-shortcut first-keystroke="ctrl shift alt m" />
+  </action>
+  
+  <!-- Big Data Tool Window (for data analysis tasks) -->
+  <action id="ActivateBigDataToolWindowToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl alt b" />
+  </action>
+  
+  <!-- Terminal Integration -->
+  
+  <!-- Switch to Warp Terminal -->
+  <action id="ActivateTerminalToolWindow">
+    <keyboard-shortcut first-keystroke="alt f12" />
+    <keyboard-shortcut first-keystroke="ctrl backtick" />
+  </action>
+  
+  <!-- Quick Commands -->
+  
+  <!-- Quick Run Configuration with Warp -->
+  <action id="ExternalTool_Quick Run in Warp">
+    <keyboard-shortcut first-keystroke="ctrl shift f10" />
+  </action>
+  
+  <!-- Quick Test with Warp -->
+  <action id="ExternalTool_Quick Test in Warp">
+    <keyboard-shortcut first-keystroke="ctrl shift f9" />
+  </action>
+  
+  <!-- Development Workflow Shortcuts -->
+  
+  <!-- Build and Deploy with Warp -->
+  <action id="ExternalTool_Build Deploy Warp">
+    <keyboard-shortcut first-keystroke="ctrl f9" />
+  </action>
+  
+  <!-- Lint and Format with Warp -->
+  <action id="ExternalTool_Lint Format Warp">
+    <keyboard-shortcut first-keystroke="ctrl alt l" />
+  </action>
+</keymap>

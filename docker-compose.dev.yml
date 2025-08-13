@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build:
+      context: ./warp-extension
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8765:8765"
+      - "9229:9229"  # Debug port
+    volumes:
+      - ./warp-extension:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DEBUG=true
+    networks:
+      - warp-integration
+
+  test-runner:
+    build:
+      context: .
+      dockerfile: ./infrastructure/docker/Dockerfile.test
+    volumes:
+      - .:/workspace
+    networks:
+      - warp-integration
+    depends_on:
+      - mcp-server
+
+networks:
+  warp-integration:
+    driver: bridge
