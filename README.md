@@ -5,9 +5,12 @@
 [![GitHub stars](https://img.shields.io/github/stars/idshdx/warp-webstorm-integration.svg)](https://github.com/idshdx/warp-webstorm-integration/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/idshdx/warp-webstorm-integration.svg)](https://github.com/idshdx/warp-webstorm-integration/issues)
 
-**The world's first AI-coordinated development environment** that bridges JetBrains IDEs with Warp Terminal through an innovative dual-plugin architecture.
+**AI-coordinated development environment** that bridges JetBrains IDEs with Warp Terminal, using the best of all worlds.
 
-## ✨ Key Features
+ Only available as Jetbrains IDEs plugin (for now)-- because Wasp does feature a similar modding ecosystem yet, but with plans to open source parts of it.
+ It does through an dual-plugin architecture.
+
+## ✨ Features & WIP
 
 🤖 **AI-Powered Workflows**: Multi-agent coordination for intelligent development tasks  
 ⚡ **Real-time Sync**: IDE context ↔ Terminal with <200ms latency  
