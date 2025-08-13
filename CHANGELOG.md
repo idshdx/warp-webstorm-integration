@@ -176,6 +176,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-**For detailed release information, please refer to [GitHub Releases](https://github.com/warp-webstorm-integration/releases).**
+**For detailed release information, please refer to [GitHub Releases](https://github.com/idshdx/warp-webstorm-integration/releases).**
 
-**Questions or feedback?** Please [open an issue](https://github.com/warp-webstorm-integration/issues) or join our [discussions](https://github.com/warp-webstorm-integration/discussions).
+**Questions or feedback?** Please [open an issue](https://github.com/idshdx/warp-webstorm-integration/issues) or join our [discussions](https://github.com/idshdx/warp-webstorm-integration/discussions).
