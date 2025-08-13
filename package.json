@@ -1,0 +1,30 @@
+{
+  "name": "warp-webstorm-integration",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AI-coordinated integration between Warp terminal and JetBrains WebStorm IDE",
+  "workspaces": [
+    "warp-extension",
+    "shared-schemas",
+    "context-server"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces", 
+    "clean": "npm run clean --workspaces",
+    "dev": "concurrently \"npm run dev:extension\" \"npm run dev:server\"",
+    "dev:extension": "npm run dev --workspace=warp-extension",
+    "dev:server": "npm run dev --workspace=context-server",
+    "setup": "./scripts/setup-dev-environment.sh",
+    "postinstall": "npm run build --workspace=shared-schemas"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "lerna": "^8.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

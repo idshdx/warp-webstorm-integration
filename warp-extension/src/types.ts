@@ -115,16 +115,39 @@ export interface ConnectionInfo {
   lastActivity: number;
 }
 
+export type MCPMessageTypeString =
+  | 'CONNECTION_ESTABLISHED'
+  | 'CLIENT_IDENTIFICATION'
+  | 'CLIENT_ACKNOWLEDGED'
+  | 'HEARTBEAT'
+  | 'HEARTBEAT_RESPONSE'
+  | 'CONTEXT_UPDATE'
+  | 'CONTEXT_SYNC'
+  | 'CONTEXT_ACK'
+  | 'COMMAND_REQUEST'
+  | 'COMMAND_EXECUTION'
+  | 'COMMAND_RESULT'
+  | 'WORKFLOW_EXECUTION'
+  | 'WORKFLOW_RESULT'
+  | 'WORKFLOW_STATUS'
+  | 'AI_COORDINATION'
+  | 'AI_COORDINATION_RESULT'
+  | 'AI_AGENT_RESPONSE'
+  | 'ERROR'
+  | 'RESPONSE';
+
 export interface MCPMessage {
   id: string;
-  type: MCPMessageType;
+  type: MCPMessageType | MCPMessageTypeString;
   timestamp: number;
-  payload: any;
+  payload?: any | undefined;
   metadata?: {
     priority?: 'low' | 'normal' | 'high';
     encrypted?: boolean;
     compressed?: boolean;
-  };
+    retryCount?: number;
+    correlationId?: string;
+  } | undefined;
 }
 
 export enum MCPMessageType {

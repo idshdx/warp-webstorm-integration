@@ -41,8 +41,6 @@
   <!-- Plugin compatibility -->
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lang</depends>
-  <depends optional="true" config-file="javascript-support.xml">com.intellij.modules.javascript</depends>
-  <depends optional="true" config-file="java-support.xml">com.intellij.modules.java</depends>
   <depends optional="true">Git4Idea</depends>
   <depends optional="true">org.jetbrains.plugins.terminal</depends>
 

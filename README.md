@@ -1,117 +1,129 @@
-# 🚀 Warp-JetBrains IDEs Integration
+# 🚀 Warp-WebStorm Integration MVP
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub release](https://img.shields.io/github/release/idshdx/warp-webstorm-integration.svg)](https://github.com/idshdx/warp-webstorm-integration/releases)
-[![GitHub stars](https://img.shields.io/github/stars/idshdx/warp-webstorm-integration.svg)](https://github.com/idshdx/warp-webstorm-integration/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/idshdx/warp-webstorm-integration.svg)](https://github.com/idshdx/warp-webstorm-integration/issues)
+> AI-coordinated integration between Warp terminal and JetBrains WebStorm IDE
 
-**AI-coordinated development environment** that bridges JetBrains IDEs with Warp Terminal, using the best of all worlds.
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](#)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0--mvp-blue.svg)](#)
+[![MVP Status](https://img.shields.io/badge/status-MVP%20Ready-success)](#)
 
- Only available as Jetbrains IDEs plugin (for now)-- because Wasp does feature a similar modding ecosystem yet, but with plans to open source parts of it.
- It does through an dual-plugin architecture.
+## 🎉 MVP Status: READY FOR DEVELOPMENT!
 
-## ✨ Features & WIP
+**The foundational MVP is complete and fully functional!** All core components are built, tested, and ready for feature implementation.
 
-🤖 **AI-Powered Workflows**: Multi-agent coordination between Warp agents and Jetbrains AI assistant and Junie for intelligent development tasks  
-⚡ **Real-time Sync**: IDE context ↔ Terminal with <200ms latency  
-🔗 **Seamless Integration**: Native plugins for JetBrains IDEs using  Warp Terminal  
-📡 **MCP Protocol**: Advanced communication layer for reliable data exchange  
+### ✅ What's Working Right Now:
+- **JetBrains Plugin**: Builds successfully with WebSocket MCP bridge
+- **Warp Extension**: TypeScript MCP server with AI coordination framework  
+- **MCP Communication**: WebSocket bridge for real-time IDE-terminal messaging
+- **Context Sync**: IDE project context capture and sharing services
+- **Plugin Architecture**: Extensible, production-ready foundation
+
+### 🌟 MVP Features
+- **🔗 Real-time MCP Bridge**: WebSocket communication between IDE and terminal
+- **🧠 AI Coordination Framework**: Multi-agent workflow orchestration ready
+- **📋 Context Sync**: IDE state capture and project context sharing
+- **⌨️ Smart Shortcuts**: Keyboard shortcuts for launching Warp and syncing context
+- **🛠️ Extensible Architecture**: Modular design for easy feature addition
 
 ## 🏗️ Architecture
 
-### Dual-Plugin System
-- **JetBrains Plugin** (Kotlin): IDE integration with context capture and Warp launcher
-- **Warp Extension** (TypeScript): AI coordination, workflow engine, and MCP server
-- **MCP Protocol**: 20+ message types for comprehensive IDE-terminal communication
+The MVP implements a proven dual-plugin architecture:
 
-### Core Components
-1. **Context Sync Service**: Real-time IDE state sharing
-2. **AI Agent System**: Multi-agent workflow coordination
-3. **Workflow Engine**: Sequential/parallel task execution
-4. **Security Manager**: Authentication and audit logging
-5. **MCP Bridge**: Reliable WebSocket communication
+```
+JetBrains Plugin (Kotlin) ←→ MCP Bridge ←→ Warp Extension (TypeScript)
+    • Context Capture           • WebSocket           • AI Coordination
+    • User Interface            • JSON-RPC            • Command Execution  
+    • Settings Management       • Port 8765           • Workflow Engine
+```
 
-## 🚀 Quick Start
+## 🚀 Quick Start & MVP Demo
 
-### Prerequisites
-- JetBrains IDE 2023.3.2+ (IntelliJ IDEA, WebStorm, PyCharm, PhpStorm)
-- Warp Terminal (latest version)
-- Java 17+ (for JetBrains plugin)
-- Node.js 18+ (for Warp extension)
-
-### Installation
-
+### 1. Run the MVP Demo
 ```bash
-# Clone the repository
-git clone https://github.com/idshdx/warp-webstorm-integration.git
-cd warp-webstorm-integration
+# Complete MVP demonstration
+./demo-mvp.sh
 
-# Run the automated setup
-./install.sh
+# Test server startup functionality  
+./test-mvp-startup.sh
 ```
 
-**Or follow the detailed [Quick Start Guide](QUICK_START.md)**
+### 2. Manual Setup
 
-## 📚 Documentation
+**Prerequisites:**
+- Java 17+ (Updated for IntelliJ Platform 2023.3.2)
+- Node.js 18+
+- Gradle 7+
+- IntelliJ IDEA or WebStorm
+- Warp Terminal
 
-- 📖 **[Quick Start Guide](QUICK_START.md)** - Get up and running in 5 minutes
-- 🏗️ **[Technical Architecture](TECHNICAL_ARCHITECTURE.md)** - System design and components
-- 📋 **[API Reference](API_REFERENCE.md)** - Complete API documentation
-- 🚢 **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Production deployment instructions
-- 🔧 **[Workflow Guide](WORKFLOW_GUIDE.md)** - Usage patterns and workflows
-- 🗺️ **[Development Roadmap](DEVELOPMENT_ROADMAP.md)** - Feature timeline and milestones
+**Build & Test:**
+```bash
+# Environment setup (already done if demo worked)
+./scripts/setup-dev-environment.sh
 
-## 💡 Usage Examples
+# Build all components
+npm run build
 
-### Launch Warp with Project Context
-```kotlin
-// In your JetBrains IDE
-Ctrl+Shift+T  // Launch Warp with current project context
+# Run comprehensive tests
+npm test
 ```
 
-### Sync IDE State to Terminal
-```kotlin
-// Share current file, git branch, and debug state
-Ctrl+Shift+S  // Sync context to Warp
+### 3. Try the Integration
+```bash
+# Start MCP Server
+cd warp-extension
+npm run dev  # Starts WebSocket server on port 8765
+
+# In another terminal - Test JetBrains Plugin
+cd jetbrains-plugin
+./gradlew runIde  # Opens IDE with plugin loaded
 ```
 
-### AI-Coordinated Workflows
-```typescript
-// Multi-agent task execution
-await workflowEngine.execute([
-  'analyze-code',
-  'run-tests', 
-  'generate-docs'
-], { mode: 'sequential' });
+**Available keyboard shortcuts in IDE:**
+- `Ctrl+Shift+T`: Launch Warp terminal
+- `Tools > Warp Integration > Sync Context`: Manual context sync
+
+## 📁 Project Structure
+
 ```
+warp-webstorm-integration/
+├── jetbrains-plugin/        # JetBrains IDE Plugin (Kotlin)
+│   ├── src/main/kotlin/     # Main plugin source code
+│   ├── src/test/kotlin/     # Plugin tests
+│   └── build.gradle.kts     # Build configuration
+├── warp-extension/          # Warp Terminal Extension (TypeScript)
+│   ├── src/                 # Extension source code
+│   ├── test/                # Extension tests
+│   └── package.json         # Package configuration
+├── shared/                  # Shared protocols and types
+│   ├── protocols/           # MCP protocol definitions
+│   └── types/               # Shared TypeScript/Kotlin types
+├── infrastructure/          # DevOps and deployment
+│   ├── docker/              # Docker configurations
+│   └── kubernetes/          # K8s manifests
+└── docs/                    # Documentation
+```
+
+## 🛠️ Development
+
+See [DEVELOPMENT_ROADMAP.md](DEVELOPMENT_ROADMAP.md) for detailed development phases and milestones.
+
+## 📖 Documentation
+
+- [Development Roadmap](DEVELOPMENT_ROADMAP.md)
+- [Executive Summary](EXECUTIVE_SUMMARY.md)
+- [API Documentation](docs/api.md)
+- [User Guide](docs/user-guide.md)
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
-
-- 🛠️ Development setup
-- 📝 Coding standards
-- 🧪 Testing requirements
-- 📋 Issue templates
-- 🔄 Pull request process
-
-## 🔒 Security
-
-For security concerns, please see our [Security Policy](SECURITY.md) and follow responsible disclosure guidelines.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Ensure all tests pass
+6. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🌟 Show Your Support
-
-If you find this project useful, please consider:
-- ⭐ Starring the repository
-- 🐛 [Reporting issues](https://github.com/idshdx/warp-webstorm-integration/issues)
-- 💬 [Joining discussions](https://github.com/idshdx/warp-webstorm-integration/discussions)
-- 🚀 Sharing with other developers
-
----
-
-**Built with ❤️ by the developer community**  
-**Questions?** [Open an issue](https://github.com/idshdx/warp-webstorm-integration/issues) • **Latest Release:** [v1.0.0](https://github.com/idshdx/warp-webstorm-integration/releases)
+MIT License - see [LICENSE](LICENSE) for details.

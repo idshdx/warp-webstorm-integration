@@ -1,8 +1,8 @@
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.0.21"
-    id("org.jetbrains.intellij") version "1.17.4"
-    id("org.jetbrains.dokka") version "1.9.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.21"
+    id("org.jetbrains.intellij") version "1.16.1"
+    id("org.jetbrains.dokka") version "1.9.10"
 }
 
 group = "com.warpwebstorm"
@@ -18,7 +18,6 @@ intellij {
     type.set("IC") // IntelliJ IDEA Community Edition
     
     plugins.set(listOf(
-        "com.intellij.java",
         "org.jetbrains.plugins.terminal",
         "Git4Idea"
     ))
@@ -47,7 +46,7 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("233")
+        sinceBuild.set("232")
         untilBuild.set("241.*")
         
         pluginDescription.set("""

@@ -18,6 +18,14 @@ import {
   ConnectionInfo,
   MCPMessageType 
 } from './types';
+import {
+  validateMCPMessage,
+  validateIDEContext,
+  ValidationError,
+  MCPErrorSchema,
+  ErrorType,
+  MCPMessage as SchemaMCPMessage
+} from '@warp-webstorm/shared-schemas';
 
 export interface MCPServerOptions {
   port?: number;
@@ -39,7 +47,8 @@ export class MCPServer extends EventEmitter {
   private securityManager: SecurityManager;
   
   private isRunning = false;
-  private heartbeatTimer?: NodeJS.Timeout;
+  private startTime?: number;
+  private heartbeatTimer?: ReturnType<typeof setInterval>;
   
   constructor(private options: MCPServerOptions = {}) {
     super();
@@ -88,6 +97,7 @@ export class MCPServer extends EventEmitter {
       this.server.on('error', this.handleServerError.bind(this));
       
       this.startHeartbeat();
+      this.startTime = Date.now();
       this.isRunning = true;
       
       logger.info(`🚀 MCP Server started on ${this.options.host}:${this.options.port}`);
@@ -190,9 +200,16 @@ export class MCPServer extends EventEmitter {
    * Handle incoming message from client
    */
   private async handleMessage(connectionId: string, data: any): Promise<void> {
+    let messageId = 'unknown';
+    const ws = this.connections.get(connectionId);
+    
     try {
       const rawMessage = data instanceof Buffer ? data.toString() : String(data);
-      const message: MCPMessage = JSON.parse(rawMessage);
+      const parsedMessage = JSON.parse(rawMessage);
+      
+      // Validate message using shared schema
+      const message = validateMCPMessage(parsedMessage);
+      messageId = message.id;
       
       logger.debug(`📨 Received message from ${connectionId}:`, {
         id: message.id,
@@ -200,32 +217,24 @@ export class MCPServer extends EventEmitter {
         payloadSize: JSON.stringify(message.payload).length
       });
       
-      // Validate message
-      if (!this.isValidMessage(message)) {
-        logger.warn(`Invalid message from ${connectionId}:`, message);
-        return;
-      }
-      
       // Route message based on type
       await this.routeMessage(connectionId, message);
       
     } catch (error) {
+      if (error instanceof ValidationError) {
+        logger.warn(`Invalid message format from ${connectionId}:`, error.zodError.errors);
+        
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          this.sendValidationError(ws, messageId, error.zodError.errors);
+        }
+        return;
+      }
+      
       logger.error(`Failed to handle message from ${connectionId}:`, error);
       
-      // Send error response
-      const errorMessage: MCPMessage = {
-        id: this.generateMessageId(),
-        type: MCPMessageType.ERROR,
-        timestamp: Date.now(),
-        payload: {
-          error: 'Failed to process message',
-          originalMessageId: 'unknown'
-        }
-      };
-      
-      const ws = this.connections.get(connectionId);
-      if (ws) {
-        this.sendMessage(ws, errorMessage);
+      // Send generic error response
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        this.sendError(ws, messageId, 'Failed to process message', 'INTERNAL_ERROR');
       }
     }
   }
@@ -233,7 +242,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Route message to appropriate handler
    */
-  private async routeMessage(connectionId: string, message: MCPMessage): Promise<void> {
+  private async routeMessage(connectionId: string, message: SchemaMCPMessage): Promise<void> {
     const ws = this.connections.get(connectionId);
     if (!ws) {
       return;
@@ -305,7 +314,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Handle client identification
    */
-  private async handleClientIdentification(connectionId: string, message: MCPMessage): Promise<MCPMessage> {
+  private async handleClientIdentification(connectionId: string, message: SchemaMCPMessage): Promise<MCPMessage> {
     const { clientType, clientVersion, capabilities } = message.payload;
     
     logger.info(`Client identified: ${clientType} v${clientVersion} (${connectionId})`);
@@ -339,7 +348,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Handle context update from IDE
    */
-  private async handleContextUpdate(connectionId: string, message: MCPMessage): Promise<MCPMessage | null> {
+  private async handleContextUpdate(connectionId: string, message: SchemaMCPMessage): Promise<MCPMessage | null> {
     const context: IDEContext = message.payload.context;
     
     logger.debug(`📋 Context update received from ${connectionId}`);
@@ -392,7 +401,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Handle command request from Warp
    */
-  private async handleCommandRequest(connectionId: string, message: MCPMessage): Promise<MCPMessage | null> {
+  private async handleCommandRequest(connectionId: string, message: SchemaMCPMessage): Promise<MCPMessage | null> {
     const command: WarpCommand = message.payload.command;
     
     logger.debug(`⚡ Command request: ${command.type}`);
@@ -442,7 +451,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Handle workflow execution request
    */
-  private async handleWorkflowExecution(connectionId: string, message: MCPMessage): Promise<MCPMessage | null> {
+  private async handleWorkflowExecution(connectionId: string, message: SchemaMCPMessage): Promise<MCPMessage | null> {
     const { workflowId, context, parameters } = message.payload;
     
     logger.info(`🔄 Executing workflow: ${workflowId}`);
@@ -481,7 +490,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Handle AI coordination request
    */
-  private async handleAICoordination(connectionId: string, message: MCPMessage): Promise<MCPMessage | null> {
+  private async handleAICoordination(connectionId: string, message: SchemaMCPMessage): Promise<MCPMessage | null> {
     const { action, context, parameters } = message.payload;
     
     logger.debug(`🤖 AI coordination: ${action}`);
@@ -518,7 +527,7 @@ export class MCPServer extends EventEmitter {
   /**
    * Handle heartbeat message
    */
-  private handleHeartbeat(message: MCPMessage): MCPMessage {
+  private handleHeartbeat(message: SchemaMCPMessage): MCPMessage {
     return {
       id: this.generateMessageId(),
       type: MCPMessageType.HEARTBEAT_RESPONSE,
@@ -693,6 +702,43 @@ export class MCPServer extends EventEmitter {
   }
   
   /**
+   * Send validation error to client
+   */
+  private sendValidationError(ws: WebSocket, messageId: string, validationErrors: any[]): void {
+    const errorMessage: MCPMessage = {
+      id: this.generateMessageId(),
+      type: MCPMessageType.ERROR,
+      timestamp: Date.now(),
+      payload: {
+        error: 'Message validation failed',
+        type: 'VALIDATION_ERROR',
+        details: validationErrors,
+        originalMessageId: messageId
+      }
+    };
+    
+    this.sendMessage(ws, errorMessage);
+  }
+  
+  /**
+   * Send error message to client
+   */
+  private sendError(ws: WebSocket, messageId: string, error: string, errorType: ErrorType): void {
+    const errorMessage: MCPMessage = {
+      id: this.generateMessageId(),
+      type: MCPMessageType.ERROR,
+      timestamp: Date.now(),
+      payload: {
+        error,
+        type: errorType,
+        originalMessageId: messageId
+      }
+    };
+    
+    this.sendMessage(ws, errorMessage);
+  }
+  
+  /**
    * Get server status
    */
   public getStatus(): {
@@ -707,7 +753,7 @@ export class MCPServer extends EventEmitter {
       connections: this.connections.size,
       jetbrainsConnected: this.jetbrainsConnection?.readyState === WebSocket.OPEN,
       warpConnected: this.warpConnection?.readyState === WebSocket.OPEN,
-      uptime: this.isRunning ? Date.now() - (this as any).startTime : 0
+      uptime: this.isRunning && this.startTime ? Date.now() - this.startTime : 0
     };
   }
 }
