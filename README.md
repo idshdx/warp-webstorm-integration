@@ -14,9 +14,7 @@
 
 🤖 **AI-Powered Workflows**: Multi-agent coordination between Warp agents and Jetbrains AI assistant and Junie for intelligent development tasks  
 ⚡ **Real-time Sync**: IDE context ↔ Terminal with <200ms latency  
-🔗 **Seamless Integration**: Native plugins for both JetBrains IDEs and Warp Terminal  
-🛡️ **Enterprise Security**: OWASP compliance, audit logging, TLS encryption  
-🌍 **Cross-Platform**: macOS, Linux, and Windows support  
+🔗 **Seamless Integration**: Native plugins for JetBrains IDEs using  Warp Terminal  
 📡 **MCP Protocol**: Advanced communication layer for reliable data exchange  
 
 ## 🏗️ Architecture
