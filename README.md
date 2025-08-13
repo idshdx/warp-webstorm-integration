@@ -1,4 +1,4 @@
-# 🚀 Warp-WebStorm Integration
+# 🚀 Warp-JetBrains IDEs Integration
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub release](https://img.shields.io/github/release/idshdx/warp-webstorm-integration.svg)](https://github.com/idshdx/warp-webstorm-integration/releases)
