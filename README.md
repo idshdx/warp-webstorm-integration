@@ -1,4 +1,4 @@
-# 🚀 Warp-WebStorm Integration MVP
+# 🚀 Vibe Code Warp-WebStorm Integration MVP
 
 > AI-coordinated integration between Warp terminal and JetBrains WebStorm IDE
 
@@ -7,7 +7,7 @@
 [![Version](https://img.shields.io/badge/version-1.0.0--mvp-blue.svg)](#)
 [![MVP Status](https://img.shields.io/badge/status-MVP%20Ready-success)](#)
 
-## 🎉 MVP Status: READY FOR DEVELOPMENT!
+## 🎉 WIP Status: READY ONLY FOR DEVELOPMENT!
 
 **The foundational MVP is complete and fully functional!** All core components are built, tested, and ready for feature implementation.
 
@@ -15,7 +15,7 @@
 - **JetBrains Plugin**: Builds successfully with WebSocket MCP bridge
 - **Warp Extension**: TypeScript MCP server with AI coordination framework  
 - **MCP Communication**: WebSocket bridge for real-time IDE-terminal messaging
-- **Context Sync**: IDE project context capture and sharing services
+- **Context Sync**: IDE project context capture and sharing services, some ideas not tested
 - **Plugin Architecture**: Extensible, production-ready foundation
 
 ### 🌟 MVP Features
@@ -25,18 +25,13 @@
 - **⌨️ Smart Shortcuts**: Keyboard shortcuts for launching Warp and syncing context
 - **🛠️ Extensible Architecture**: Modular design for easy feature addition
 
-### 📣 Latest Changes
+### 📣 Recap
 - ✅ MVP successfully built and integrated end-to-end
 - 🧪 Tests: 29/31 passing across components (remaining are minor config items)
 - 🔌 MCP WebSocket bridge operational on port 8765
 - 🎮 IDE shortcuts: Ctrl+Shift+T to launch Warp; Tools > Warp Integration > Sync Context
 - 🧰 Demo scripts: ./demo-mvp.sh and ./test-mvp-startup.sh
 - 🧩 Build pipeline: Kotlin + Gradle and TypeScript + Node.js builds green
-
-### 📈 Business Ready
-- Market position: First-mover advantage in AI-coordinated IDE-terminal integration
-- Revenue model: Freemium with clear upgrade paths
-- Distribution: Ready for JetBrains Marketplace and Warp Extension Store
 
 ## 🏗️ Architecture
 
