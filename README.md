@@ -1,3 +1,5 @@
+[![MSeeP.ai Security Assessment Badge](https://mseep.net/pr/idshdx-warpbrains-badge.png)](https://mseep.ai/app/idshdx-warpbrains)
+
 # 🚀 Vibe Code Warp-WebStorm Integration MVP
 
 > AI-coordinated integration between Warp terminal and JetBrains WebStorm IDE
